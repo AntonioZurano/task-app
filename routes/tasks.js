@@ -50,12 +50,16 @@ const tasks = [
         
     }
 ]
+// GET /tasks/:id?
+router.get('/:id', (req, res) => {
+   // const car = cars.find(coche => coche.id === req.params.id)
+   
+    const task = tasks.find(task => tasks.id === req.params.id)
 
-router.get('/:id?', (req, res) => {
-    res.send(tasks)
+    res.json(task || {text: 'not found'} )
+   
+   // res.send(tasks)
   })
-
-  
 
 
 
