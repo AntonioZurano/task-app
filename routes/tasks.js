@@ -50,16 +50,31 @@ const tasks = [
         
     }
 ]
-// GET /tasks/:id?
-router.get('/:id', (req, res) => {
-   // const car = cars.find(coche => coche.id === req.params.id)
-   
-    const task = tasks.find(task => tasks.id === req.params.id)
 
-    res.json(task || {text: 'not found'} )
-   
-   // res.send(tasks)
+// GET /tasks/:id?
+router.get('/:id', (req, res, next) => { 
+    const taskId = req.params.id;
+    const task = tasks.find(task => tasks.id === taskId)
+    
+    res.status(400).json(tasks || {text: 'not found'})
+
+    res.status(200).send(task)
   })
+
+// DELETE A task - /tasks/:id
+router.delete('/:id', (req, res, next) => {
+    const taskId = req.params.id;
+
+    // 404 - Task no existe
+    const foundTaskIndex = tasks.findIndex(task => task.id === taskId)
+        if (foundTaskIndex === -1) return
+    res.status(404).json({msg: 'Tarea con id ${taskId} no existe'})
+
+    // 200 - task borrado correctamente
+    tasks = tasks.filter(task => task.id !== taskId)
+    res.status(200).json({ msg: 'Tarea borrada correctamente'})
+})  
+
 
 
 
